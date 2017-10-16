@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>an example</title>
+    <style>
+    #app{
+      margin: 0 auto;
+      width: 800px;
+    }
+    .test.ace-editor{
+      display: block;
+      height: 400px;
+      
+      margin-top: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <p>
+      <select v-model="theme">
+        <option value="">default</option>
+        <option value="white">white</option>
+        <option value="dark">dark</option>
+      </select>
+      <select v-model="mode">
+        <option value="">default</option>
+        <option value="markdown">markdown</option>
+        <option value="javascript">javascript</option>
+        <option value="php">PHP</option>
+        <option value="css">css</option>
+      </select>
+      <input type="checkbox" v-model="isNumber">
+    </p>
+    <ace-editor class="test" :line-number="isNumber" :mode="mode" :theme="theme" v-model="code"></ace-editor>
+  </div>
+  <script src="https://cdn.bootcss.com/vue/2.4.2/vue.min.js"></script>
+  <script type="text/javascript" src="../dist/ace-editor.js"></script>
+  <!-- <script type="text/javascript" src="https://cdn.bootcss.com/ace/1.2.8/ext-emmet.js"></script> -->
+  <!-- <script src="https://cdn.bootcss.com/ace/1.2.8/mode-css.js"></script> -->
+  <script type="text/javascript">
+    Vue.use(AceEditor)
+    var app = new Vue({
+      el: '#app',
+      data: {
+        theme: '',
+        isNumber: false,
+        code: 'hello ace !',
+        mode: 'markdown'
+      }
+    })
+  </script>
+  
+</body>
+</html>
