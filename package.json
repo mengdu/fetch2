@@ -1,15 +1,27 @@
 {
   "name": "fetch2",
   "version": "1.0.0",
-  "description": "",
+  "description": "A more concise fetch request library",
   "main": "index.js",
   "scripts": {
     "dev": "rollup -c -w",
     "build": "set NODE_ENV=production&& rollup -c",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mengdu/fetch2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mengdu/fetch2/issues"
+  },
+  "keywords": [
+    "fetch",
+    "request",
+    "ajax"
+  ],
+  "author": "lanyue",
+  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.0",
