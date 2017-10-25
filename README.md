@@ -10,11 +10,32 @@
 
 ## use
 
-```bat
-npm install
 
-npm run build
+```bat
+npm install -S nb-fetch
+
 ```
+
+```js
+var fetch2 = require('nb-fetch')
+```
+
+> 因为 `fetch2` 包名被占用了，所以取名为 `nb-fetch` ，`node-browser-fetch` 简写。
+
+如果你是node端使用，还需另外安装 `node-fetch`，`form-data` 两个依赖。
+
+``` js
+var fetch = require('node-fetch')
+var FormData = require('form-data')
+var fetch2 = require('../dist/fetch2')
+
+// 初始化指定fetch，与FormData
+fetch2.init(fetch, FormData)
+
+// do...
+
+```
+
 
 ## api
 
@@ -31,6 +52,7 @@ npm run build
 + Fetch2.prototype.response 响应拦截器。
 + Fetch2.prototype.fetch(uri, method, options) fetch。
 + Fetch2.prototype.Fetch2 返回Fetch2对象，可用于创建全新的fetch2对象。
+
 
 ## 例子
 
@@ -128,6 +150,12 @@ var fetch21 = new Fetch2()
 
 ## polyfill
 
+如果你使用的是现代浏览器，只要引入脚本即可无需做兼容
+
+```html
+<script type="text/javascript" src="../dist/fetch2.js"></script>
+```
+
 在低版本浏览器，需要 `fetch`，`promise` 垫片。
 
 **例如：** ie9+浏览器兼容
@@ -138,6 +166,8 @@ var fetch21 = new Fetch2()
 <script src="https://cdn.bootcss.com/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
 <script type="text/javascript" src="../dist/fetch2.js"></script>
 ```
+
+在 `window` 挂载的对象为 `fetch2`
 
 ## Other
 

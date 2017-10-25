@@ -1,8 +1,8 @@
 {
-  "name": "fetch2",
+  "name": "nf-fetch",
   "version": "1.0.0",
   "description": "A more concise fetch request library",
-  "main": "index.js",
+  "main": "dist/fetch2.min.js",
   "scripts": {
     "dev": "rollup -c -w",
     "build": "set NODE_ENV=production&& rollup -c",
