@@ -36,6 +36,12 @@ fetch2.init(fetch, FormData)
 
 ```
 
+或者
+
+```js
+const fetch = require('nb-fetch/fetch')
+```
+
 
 ## api
 
