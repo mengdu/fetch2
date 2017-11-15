@@ -23,6 +23,37 @@
   }).catch(function (err) {
     console.log('请求错误', err)
   })
+
+  Fetch2.get('http://localhost:3000/examples/api.php?key=val', {
+    params: {
+      name: 'test',
+      createdAt: 'desc'
+    }
+  }).then(function (res) {
+    console.log(res.data)
+  }).catch(function (err) {
+    console.log('请求错误', err)
+  })
+
+  Fetch2.post('http://localhost:3000/examples/api.php', {
+    body: {
+      name: 'admin',
+      pass: '123456',
+      type: 1,
+      info: {
+        bool: true,
+        arr: ['aaa', 'bbb', 'ccc']
+      }
+    },
+    params: {
+      key: 'val'
+    }
+  }).then(function (res) {
+    console.log(res.data)
+  }).catch(function (err) {
+    console.log('请求错误', err)
+  })
+
 </script>
 </head>
 <body>

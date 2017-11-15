@@ -1,4 +1,6 @@
-
+/**
+* 判断一些原生对象
+**/
 function isOriginObject (obj) {
   return obj.constructor === Date ||
   obj instanceof HTMLElement ||
@@ -6,6 +8,11 @@ function isOriginObject (obj) {
   obj.constructor === Blob ||
   obj.constructor === File
 }
+
+function isArr (val) {
+  return Object.prototype.toString.call(val) === '[object Array]'
+}
+
 /**
 * 把参数对象序列化成树对象
 *
@@ -26,10 +33,10 @@ function ObjTree (obj) {
   return arr
 }
 /**
-* 从对象树种遍历所有路径，及叶子构造成url参数
+* 从对象树种遍历所有路径，及叶子
 *
 **/
-function URLParams (tree, encode) {
+function ObjTreePaths (tree) {
   var arr = []
   // 路径遍历
   function path (tree, label) {
@@ -52,16 +59,29 @@ function URLParams (tree, encode) {
     }
   }
   path(tree)
-  // 连接所有路径
-  var qs = arr.join('&')
-  return encode ? encodeURI(qs) : qs
+  return arr
 }
 
+function URLParams (obj, encode) {
+  if (typeof obj === 'object' && !isOriginObject(obj) && !isArr(obj)) {
+    var paths = ObjTreePaths(ObjTree(obj))
+    var qs = paths.join('&')
+    return encode ? encodeURI(qs) : qs
+  }
+  return ''
+}
 
-module.exports = {
-  url: (url, obj) => {
-    var params = URLParams(ObjTree(obj))
-    // return url.
+export default {
+  url: (url, obj, encode) => {
+    var params = URLParams(obj, encode)
+    if (url.indexOf('?') > -1) {
+      var uri = url.split('?')
+      return params ? (url.replace(/&$/, '') + (uri[1] ? '&' : '') + params) : url
+    } else {
+      return params ? url + '?' + params : url
+    }
   },
-  stringify: obj => URLParams(ObjTree(obj))
+  stringify: (obj, encode) => {
+    return URLParams(obj, encode)
+  }
 }

@@ -8,6 +8,8 @@
 + 支持async/await，promise。
 
 
+> 代码近期重构调整，请使用npm 的版本
+
 ## use
 
 
@@ -58,6 +60,19 @@ const fetch = require('nb-fetch/fetch')
 + Fetch2.prototype.response 响应拦截器。
 + Fetch2.prototype.fetch(uri, method, options) fetch。
 + Fetch2.prototype.Fetch2 返回Fetch2对象，可用于创建全新的fetch2对象。
+
+
+### options
+
++ **method**: 请求使用的方法，如 GET、POST、PUT、PATH、DELETE
++ **headers**: 请求的头信息，形式为 Headers 对象或 ByteString。
++ **body**: 请求的 body 信息：可能是一个 Blob、BufferSource、FormData、URLSearchParams 或者 USVString 对象。注意 GET 或 HEAD 方法的请求不能包含 body 信息。
++ **mode**: 请求的模式，如 cors、 no-cors 或者 same-origin。
++ **credentials**: 请求的 credentials，如 omit、same-origin 或者 include。
++ **cache**:  请求的 cache 模式: default, no-store, reload, no-cache, force-cache, or only-if-cached.
+
++ **type**: 响应类型；json，text，blob，arrayBuffer 默认json
++ **params**: query参数对象；key/val支持多层次
 
 
 ## 例子

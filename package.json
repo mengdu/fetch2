@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "rollup -c -w",
     "build": "set NODE_ENV=production&& rollup -c",
+    "serve": " php -S localhost:3000 -t .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

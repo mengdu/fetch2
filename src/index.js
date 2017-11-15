@@ -1,4 +1,4 @@
-
+import URLParams from './url-params'
 var _self = (typeof self === 'object' && self.self === self) && self
 var _global = (typeof global === 'object' && global.global === global) && global
 var root = _self || _global
@@ -6,15 +6,6 @@ var root = _self || _global
 var Fetch = root.fetch || null
 var FormData = root.FormData
 
-// 构造字符串body
-function ObjToUrlParams (obj) {
-  var urlstr = ''
-  for (var key in obj) {
-    if (urlstr) urlstr += '&'
-    urlstr += key + '=' + obj[key]
-  }
-  return urlstr
-}
 
 function Fetch2 () {}
 
@@ -59,7 +50,7 @@ Fetch2.prototype.fetch = function (uri, method, options = {}) {
     options.headers['Content-Type'] = 'application/x-www-form-urlencoded'
   }
   if (isTransion) {
-    options.body = ObjToUrlParams(options.body)
+    options.body = URLParams.stringify(options.body)
   }
   // var opts = Object.assign({}, {method}, options)
   options.method = method
@@ -87,7 +78,8 @@ Fetch2.prototype.fetch = function (uri, method, options = {}) {
         }
         run()
       }
-      Fetch(uri, opts).then(res => {
+      var url = URLParams.url(uri, opts.params)
+      Fetch(url, opts).then(res => {
         switch (options.type) {
           case 'text':
             res.text().then(text => {
@@ -137,6 +129,8 @@ Fetch2.prototype.fetch = function (uri, method, options = {}) {
     run()
   })
 }
+
+Fetch2.prototype.URLParams = URLParams
 
 // for node-fetch
 Fetch2.prototype.init = function (fetch, formData) {
