@@ -6,6 +6,7 @@
   <!-- for ie9+ -->
   <script src="https://cdn.bootcss.com/fetch/2.0.3/fetch.min.js"></script>
   <script src="https://cdn.bootcss.com/es6-promise/4.1.1/es6-promise.auto.min.js"></script>
+  <script src="https://cdn.bootcss.com/axios/0.17.1/axios.min.js"></script>
   <script type="text/javascript" src="../dist/fetch2.js"></script>
 <script type="text/javascript">
 
@@ -54,6 +55,17 @@
     console.log('请求错误', err)
   })
 
+  var formData = new FormData()
+  formData.append('file', new Blob(['xxxx']))
+  formData.append('key', 'val')
+  Fetch2.post('http://localhost:3000/examples/api.php', {
+    body: formData
+  })
+  axios.post('http://localhost:3000/examples/api.php', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data; charset=UTF-8'
+    }
+  })
 </script>
 </head>
 <body>
