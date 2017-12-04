@@ -1,13 +1,3 @@
-/**
-* 判断一些原生对象
-**/
-function isOriginObject (obj) {
-  return obj.constructor === Date ||
-  obj instanceof HTMLElement ||
-  typeof obj === 'function' ||
-  obj.constructor === Blob ||
-  obj.constructor === File
-}
 
 function isArr (val) {
   return Object.prototype.toString.call(val) === '[object Array]'
@@ -20,10 +10,6 @@ function isArr (val) {
 function ObjTree (obj) {
   var arr = []
   for (var key in obj) {
-    // 过滤一些原生对象类型
-    if (isOriginObject(obj[key])) {
-      continue
-    }
     if (typeof obj[key] === 'object') {
       arr.push({label: key, child: ObjTree(obj[key])})
     } else {
@@ -63,7 +49,7 @@ function ObjTreePaths (tree) {
 }
 
 function URLParams (obj, encode) {
-  if (typeof obj === 'object' && !isOriginObject(obj) && !isArr(obj)) {
+  if (typeof obj === 'object' && !isArr(obj)) {
     var paths = ObjTreePaths(ObjTree(obj))
     var qs = paths.join('&')
     return encode ? encodeURI(qs) : qs

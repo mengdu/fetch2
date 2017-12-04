@@ -21,6 +21,13 @@ async function test () {
     body: {
       name: 'xxx',
       pass: '123456'
+    },
+    params: {
+      type: 1,
+      info: {
+        bool: true,
+        arr: ['aaa', 'bbb', 'ccc']
+      }
     }
   })
 
