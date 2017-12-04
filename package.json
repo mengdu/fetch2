@@ -1,6 +1,6 @@
 {
   "name": "nb-fetch",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A more concise fetch request library",
   "main": "dist/fetch2.min.js",
   "scripts": {
