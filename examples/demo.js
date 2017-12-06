@@ -20,14 +20,16 @@ async function test () {
   var result = await fetch2.post('http://www.e.com/api/index.php?query=test', {
     body: {
       name: 'xxx',
-      pass: '123456'
+      pass: '123456',
+      msg: '测试'
     },
     params: {
       type: 1,
       info: {
         bool: true,
         arr: ['aaa', 'bbb', 'ccc']
-      }
+      },
+      msg: '测试'
     }
   })
 
