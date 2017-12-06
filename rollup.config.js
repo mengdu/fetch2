@@ -16,15 +16,16 @@ const globals = require('rollup-plugin-node-globals')
 var banner = 
   '/*!\n' +
   ' * fetch2.js v' + 1.0 + '\n' +
-  ' * (c) 2014-' + new Date().getFullYear() + ' lanyue\n' +
+  ' * (c) 2017-' + new Date().getFullYear() + ' lanyue\n' +
   ' */'
 
+var debug = process.env.NODE_ENV !== 'production'
 export default {
   input: 'src/index.js',
   // 外部依赖
   external: [],
   output: {
-    file: 'dist/fetch2.js',
+    file: debug ? 'dist/fetch2.js' : 'dist/fetch2.min.js',
     name: 'Fetch2',
     format: 'umd',//iife(web) , cjs(node) , umd(web&node)
     sourcemap: true,
@@ -76,6 +77,6 @@ export default {
       exclude: 'node_modules/**'
     }),
     replace({ ENV: JSON.stringify(process.env.NODE_ENV || 'development')}),
-    (process.env.NODE_ENV === 'production' && uglify())
+    (!debug && uglify())
   ]
 }

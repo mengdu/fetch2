@@ -1,2 +1,384 @@
-!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?module.exports=e():"function"==typeof define&&define.amd?define(e):t.Fetch2=e()}(this,function(){"use strict";function t(t){return"[object Array]"===Object.prototype.toString.call(t)}function e(t){var n=[];for(var o in t)"object"===u(t[o])?n.push({label:o,child:e(t[o])}):n.push({label:o,val:t[o]});return n}function n(t){function e(t,o){o=o||"";for(var r in t)t[r].child?o?e(t[r].child,o+"["+t[r].label+"]"):e(t[r].child,t[r].label):o?n.push(o+"["+t[r].label+"]="+t[r].val):n.push(t[r].label+"="+t[r].val)}var n=[];return e(t),n}function o(o,r){if("object"===(void 0===o?"undefined":u(o))&&!t(o)){var i=n(e(o)).join("&");return r?encodeURI(i):i}return""}function r(){}var i="undefined"!=typeof global?global:"undefined"!=typeof self?self:"undefined"!=typeof window?window:{},u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t},f=(function(){function t(t){this.value=t}function e(e){function n(r,i){try{var u=e[r](i),f=u.value;f instanceof t?Promise.resolve(f.value).then(function(t){n("next",t)},function(t){n("throw",t)}):o(u.done?"return":"normal",u.value)}catch(t){o("throw",t)}}function o(t,e){switch(t){case"return":r.resolve({value:e,done:!0});break;case"throw":r.reject(e);break;default:r.resolve({value:e,done:!1})}(r=r.next)?n(r.key,r.arg):i=null}var r,i;this._invoke=function(t,e){return new Promise(function(o,u){var f={key:t,arg:e,resolve:o,reject:u,next:null};i?i=i.next=f:(r=i=f,n(t,e))})},"function"!=typeof e.return&&(this.return=void 0)}"function"==typeof Symbol&&Symbol.asyncIterator&&(e.prototype[Symbol.asyncIterator]=function(){return this}),e.prototype.next=function(t){return this._invoke("next",t)},e.prototype.throw=function(t){return this._invoke("throw",t)},e.prototype.return=function(t){return this._invoke("return",t)}}(),{url:function(t,e,n){var r=o(e,n);if(t.indexOf("?")>-1){var i=t.split("?");return r?t.replace(/&$/,"")+(i[1]?"&":"")+r:t}return r?t+"?"+r:t},stringify:function(t,e){return o(t,e)}}),c="object"===("undefined"==typeof self?"undefined":u(self))&&self.self===self&&self,a="object"===(void 0===i?"undefined":u(i))&&i.global===i&&i,s=c||a,p=s.fetch||null,l=s.FormData;return r.prototype.request={interceptors:[],use:function(t){return"function"!=typeof t?(console.warn("the interceptors must be a function"),!1):(this.interceptors.push(t),!0)}},r.prototype.response={interceptors:[],use:function(t){return"function"!=typeof t?(console.warn("the interceptors must be a function"),!1):(this.interceptors.push(t),!0)}},r.prototype.fetch=function(t,e){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:{},o=this;"GET"!==(e=e?e.toUpperCase():"GET")&&"HEAD"!==e||delete n.body;var r="object"===u(n.body)&&!(n.body instanceof l);(r||"string"==typeof n.body)&&(n.headers||(n.headers={}),n.headers["Content-Type"]="application/x-www-form-urlencoded"),r&&(n.body=f.stringify(n.body)),n.method=e;var i=n;return new Promise(function(e,r){function u(){function u(t){function n(){if(i>=r.length)return e(t),!0;var o=r[i];i++,o&&"function"==typeof o&&o(t,n)}var r=o.response.interceptors;if(0===r.length)return e(t),!0;var i=0;n()}var c=f.url(t,i.params);p(c,i).then(function(t){switch(n.type){case"text":t.text().then(function(e){t.data=e,u(t)});break;case"blob":t.blob().then(function(e){t.data=e,u(t)});break;case"arrayBuffer":t.arrayBuffer().then(function(e){t.data=e,u(t)});break;default:t.json().then(function(e){t.data=e,u(t)}).catch(function(t){return r(t)})}}).catch(function(t){r(t)})}function c(){if(s>=a.length)return u(),!0;var t=a[s];s++,t&&"function"==typeof t&&t(i,c)}var a=o.request.interceptors;if(0===a.length)return u(),!0;var s=0;c()})},r.prototype.URLParams=f,r.prototype.init=function(t,e){p=t,l=e},r.prototype.Fetch2=r,r.prototype.get=function(t,e){return this.fetch(t,"GET",e)},r.prototype.post=function(t,e){return this.fetch(t,"POST",e)},r.prototype.put=function(t,e){return this.fetch(t,"PUT",e)},r.prototype.delete=function(t,e){return this.fetch(t,"DELETE",e)},r.prototype.head=function(t,e){return this.fetch(t,"HEAD",e)},r.prototype.patch=function(t,e){return this.fetch(t,"PATCH",e)},new r});
+/*!
+ * fetch2.js v1
+ * (c) 2017-2017 lanyue
+ */
+(function (global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+	typeof define === 'function' && define.amd ? define(factory) :
+	(global.Fetch2 = factory());
+}(this, (function () { 'use strict';
+
+var global$1 = typeof global !== "undefined" ? global :
+            typeof self !== "undefined" ? self :
+            typeof window !== "undefined" ? window : {};
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) {
+  return typeof obj;
+} : function (obj) {
+  return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj;
+};
+
+
+
+
+
+var asyncGenerator = function () {
+  function AwaitValue(value) {
+    this.value = value;
+  }
+
+  function AsyncGenerator(gen) {
+    var front, back;
+
+    function send(key, arg) {
+      return new Promise(function (resolve, reject) {
+        var request = {
+          key: key,
+          arg: arg,
+          resolve: resolve,
+          reject: reject,
+          next: null
+        };
+
+        if (back) {
+          back = back.next = request;
+        } else {
+          front = back = request;
+          resume(key, arg);
+        }
+      });
+    }
+
+    function resume(key, arg) {
+      try {
+        var result = gen[key](arg);
+        var value = result.value;
+
+        if (value instanceof AwaitValue) {
+          Promise.resolve(value.value).then(function (arg) {
+            resume("next", arg);
+          }, function (arg) {
+            resume("throw", arg);
+          });
+        } else {
+          settle(result.done ? "return" : "normal", result.value);
+        }
+      } catch (err) {
+        settle("throw", err);
+      }
+    }
+
+    function settle(type, value) {
+      switch (type) {
+        case "return":
+          front.resolve({
+            value: value,
+            done: true
+          });
+          break;
+
+        case "throw":
+          front.reject(value);
+          break;
+
+        default:
+          front.resolve({
+            value: value,
+            done: false
+          });
+          break;
+      }
+
+      front = front.next;
+
+      if (front) {
+        resume(front.key, front.arg);
+      } else {
+        back = null;
+      }
+    }
+
+    this._invoke = send;
+
+    if (typeof gen.return !== "function") {
+      this.return = undefined;
+    }
+  }
+
+  if (typeof Symbol === "function" && Symbol.asyncIterator) {
+    AsyncGenerator.prototype[Symbol.asyncIterator] = function () {
+      return this;
+    };
+  }
+
+  AsyncGenerator.prototype.next = function (arg) {
+    return this._invoke("next", arg);
+  };
+
+  AsyncGenerator.prototype.throw = function (arg) {
+    return this._invoke("throw", arg);
+  };
+
+  AsyncGenerator.prototype.return = function (arg) {
+    return this._invoke("return", arg);
+  };
+
+  return {
+    wrap: function (fn) {
+      return function () {
+        return new AsyncGenerator(fn.apply(this, arguments));
+      };
+    },
+    await: function (value) {
+      return new AwaitValue(value);
+    }
+  };
+}();
+
+function isArr(val) {
+  return Object.prototype.toString.call(val) === '[object Array]';
+}
+
+/**
+* 把参数对象序列化成树对象
+*
+**/
+function ObjTree(obj) {
+  var arr = [];
+  for (var key in obj) {
+    if (_typeof(obj[key]) === 'object') {
+      arr.push({ label: key, child: ObjTree(obj[key]) });
+    } else {
+      arr.push({ label: key, val: obj[key] });
+    }
+  }
+  return arr;
+}
+/**
+* 从对象树种遍历所有路径，及叶子
+*
+**/
+function ObjTreePaths(tree) {
+  var arr = [];
+  // 路径遍历
+  function path(tree, label) {
+    label = label || '';
+    for (var i in tree) {
+      if (tree[i].child) {
+        if (label) {
+          path(tree[i].child, label + '[' + tree[i].label + ']');
+        } else {
+          path(tree[i].child, tree[i].label);
+        }
+      } else {
+        // 把叶子值连接到路径后面
+        if (label) {
+          arr.push(label + '[' + tree[i].label + ']=' + tree[i].val);
+        } else {
+          arr.push(tree[i].label + '=' + tree[i].val);
+        }
+      }
+    }
+  }
+  path(tree);
+  return arr;
+}
+
+function URLParams(obj, encode) {
+  if ((typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && !isArr(obj)) {
+    var paths = ObjTreePaths(ObjTree(obj));
+    var qs = paths.join('&');
+    return encode ? encodeURI(qs) : qs;
+  }
+  return '';
+}
+
+var URLParams$1 = {
+  url: function url(_url, obj, encode) {
+    var params = URLParams(obj, encode);
+    if (_url.indexOf('?') > -1) {
+      var uri = _url.split('?');
+      return params ? _url.replace(/&$/, '') + (uri[1] ? '&' : '') + params : _url;
+    } else {
+      return params ? _url + '?' + params : _url;
+    }
+  },
+  stringify: function stringify(obj, encode) {
+    return URLParams(obj, encode);
+  }
+};
+
+var _self = (typeof self === 'undefined' ? 'undefined' : _typeof(self)) === 'object' && self.self === self && self;
+var _global = (typeof global$1 === 'undefined' ? 'undefined' : _typeof(global$1)) === 'object' && global$1.global === global$1 && global$1;
+var root = _self || _global;
+
+var Fetch = root.fetch || null;
+var FormData = root.FormData;
+
+function Fetch2() {}
+
+Fetch2.prototype.request = {
+  interceptors: [],
+  use: function use(fn) {
+    if (typeof fn !== 'function') {
+      console.warn('the interceptors must be a function');
+      return false;
+    }
+    this.interceptors.push(fn);
+    return true;
+  }
+};
+
+Fetch2.prototype.response = {
+  interceptors: [],
+  use: function use(fn) {
+    if (typeof fn !== 'function') {
+      console.warn('the interceptors must be a function');
+      return false;
+    }
+    this.interceptors.push(fn);
+    return true;
+  }
+};
+
+/**
+* 3xx-5xx responses are NOT network errors, and should be handled in then()
+**/
+Fetch2.prototype.fetch = function (uri, method) {
+  var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+
+  var that = this;
+  method = method ? method.toUpperCase() : 'GET';
+  // Request with GET/HEAD method cannot have body.
+  if (method === 'GET' || method === 'HEAD') {
+    delete options.body;
+  }
+  var isTransion = _typeof(options.body) === 'object' && !(options.body instanceof FormData);
+  // 对于formData数据，并不需要指定Content-Type
+  if (isTransion || typeof options.body === 'string') {
+    if (!options.headers) options.headers = {};
+    options.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+  }
+  if (isTransion) {
+    options.body = URLParams$1.stringify(options.body);
+  }
+  // var opts = Object.assign({}, {method}, options)
+  options.method = method;
+  var opts = options;
+  return new Promise(function (resolve, reject) {
+    function request() {
+      // 响应过滤器
+      function response(res) {
+        var interceptors = that.response.interceptors;
+        if (interceptors.length === 0) {
+          resolve(res);
+          return true;
+        }
+        var v = 0;
+        function run() {
+          if (v >= interceptors.length) {
+            resolve(res);
+            return true;
+          }
+          var interceptor = interceptors[v];
+          v++;
+          if (interceptor && typeof interceptor === 'function') {
+            interceptor(res, run);
+          }
+        }
+        run();
+      }
+      var url = URLParams$1.url(uri, opts.params, true);
+      Fetch(url, opts).then(function (res) {
+        switch (options.type) {
+          case 'text':
+            res.text().then(function (text) {
+              res.data = text;
+              response(res);
+            });
+            break;
+          case 'blob':
+            res.blob().then(function (blob) {
+              res.data = blob;
+              response(res);
+            });
+            break;
+          case 'arrayBuffer':
+            res.arrayBuffer().then(function (buffer) {
+              res.data = buffer;
+              response(res);
+            });
+            break;
+          default:
+            res.json().then(function (json) {
+              res.data = json;
+              response(res);
+            }).catch(function (err) {
+              return reject(err);
+            });
+        }
+      }).catch(function (err) {
+        reject(err);
+      });
+    }
+    var interceptors = that.request.interceptors;
+    if (interceptors.length === 0) {
+      request();
+      return true;
+    }
+    var v = 0;
+    function run() {
+      if (v >= interceptors.length) {
+        request();
+        return true;
+      }
+      var interceptor = interceptors[v];
+      v++;
+      if (interceptor && typeof interceptor === 'function') {
+        interceptor(opts, run);
+      }
+    }
+    run();
+  });
+};
+
+Fetch2.prototype.URLParams = URLParams$1;
+
+// for node-fetch
+Fetch2.prototype.init = function (fetch, formData) {
+  Fetch = fetch;
+  FormData = formData;
+};
+
+Fetch2.prototype.Fetch2 = Fetch2;
+
+Fetch2.prototype.get = function (uri, options) {
+  return this.fetch(uri, 'GET', options);
+};
+
+Fetch2.prototype.post = function (uri, options) {
+  return this.fetch(uri, 'POST', options);
+};
+
+Fetch2.prototype.put = function (uri, options) {
+  return this.fetch(uri, 'PUT', options);
+};
+
+Fetch2.prototype.delete = function (uri, options) {
+  return this.fetch(uri, 'DELETE', options);
+};
+
+Fetch2.prototype.head = function (uri, options) {
+  return this.fetch(uri, 'HEAD', options);
+};
+
+Fetch2.prototype.patch = function (uri, options) {
+  return this.fetch(uri, 'PATCH', options);
+};
+
+var fetch2 = new Fetch2();
+
+return fetch2;
+
+})));
 //# sourceMappingURL=fetch2.js.map

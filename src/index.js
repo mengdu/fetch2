@@ -78,7 +78,7 @@ Fetch2.prototype.fetch = function (uri, method, options = {}) {
         }
         run()
       }
-      var url = URLParams.url(uri, opts.params)
+      var url = URLParams.url(uri, opts.params, true)
       Fetch(url, opts).then(res => {
         switch (options.type) {
           case 'text':
