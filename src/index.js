@@ -1,4 +1,6 @@
 import URLParams from './url-params'
+import interceptor from 'js-interceptor'
+
 var _self = (typeof self === 'object' && self.self === self) && self
 var _global = (typeof global === 'object' && global.global === global) && global
 var root = _self || _global
@@ -56,28 +58,15 @@ Fetch2.prototype.fetch = function (uri, method, options = {}) {
   options.method = method
   var opts = options
   return new Promise((resolve, reject) => {
-    function request () {
-      // 响应过滤器
-      function response (res) {
-        var interceptors = that.response.interceptors
-        if (interceptors.length === 0) {
-          resolve(res)
-          return true
-        }
-        var v = 0
-        function run () {
-          if (v >= interceptors.length) {
-            resolve(res)
-            return true
-          }
-          var interceptor = interceptors[v]
-          v++
-          if (interceptor && typeof interceptor === 'function') {
-            interceptor(res, run)
-          }
-        }
-        run()
-      }
+
+    function response (ctx) {
+      let responseHandler = interceptor(that.response.interceptors)
+      responseHandler(ctx, function (res) {
+        resolve(res)
+      })
+    }
+
+    interceptor(that.request.interceptors)(opts, function (ctx) {
       var url = URLParams.url(uri, opts.params, true)
       Fetch(url, opts).then(res => {
         switch (options.type) {
@@ -108,26 +97,9 @@ Fetch2.prototype.fetch = function (uri, method, options = {}) {
       }).catch(err => {
         reject(err)
       })
-    }
-    var interceptors = that.request.interceptors
-    if (interceptors.length === 0) {
-      request()
-      return true
-    }
-    var v = 0
-    function run () {
-      if (v >= interceptors.length) {
-        request()
-        return true
-      }
-      var interceptor = interceptors[v]
-      v++
-      if (interceptor && typeof interceptor === 'function') {
-        interceptor(opts, run)
-      }
-    }
-    run()
+    })
   })
+
 }
 
 Fetch2.prototype.URLParams = URLParams
